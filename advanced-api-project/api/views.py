@@ -1,40 +1,38 @@
-from django.shortcuts import render
 from rest_framework import generics
-from .models import Book 
+from .models import Book
 from .serializers import BookSerializer
 from rest_framework import filters
-from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
-from rest_framework.authentication import TokenAuthentication 
-# Create your views here.
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.authentication import TokenAuthentication
 
-class BookList(generics.ListAPIView):
+# List of Books (GET request)
+class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    
-class BookList(generics.DetailAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Allow read-only for unauthenticated users
+
+# Book Detail View (GET request for a single book)
+class BookDetailView(generics.RetrieveAPIView):  # Changed from List to Retrieve
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Allow read-only for unauthenticated users
 
-
-class BookList(generics.CreateAPIView):
+# Create a new Book (POST request)
+class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['username', 'email']
-    
-    permission_classes = [IsAuthenticated]  # Only authenticated admin users
+    search_fields = ['title']  # Update search fields as per your model fields
+    permission_classes = [IsAuthenticated]  # Only authenticated users can create
 
-    
-class BookList(generics.UpdateAPIView):
+# Update an existing Book (PUT request)
+class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    search_fields = ['title']
-    permission_classes = [IsAuthenticated]  # Only authenticated admin users
+    permission_classes = [IsAuthenticated, IsAdminUser]  # Only admin users can update
 
-class BookList(generics.DeleteAPIView):
+# Delete an existing Book (DELETE request)
+class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated admin users
-    
+    permission_classes = [IsAuthenticated, IsAdminUser]  # Only admin users can delete
