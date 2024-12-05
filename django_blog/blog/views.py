@@ -4,7 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm  # For profile management
 from django.contrib import messages
-
+from django.views.generic import ListView , DetailView , CreateView ,UpdateView ,DeleteView
+from .models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Registration View
 def register(request):
     if request.method == "POST":
@@ -37,3 +39,33 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+
+
+
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/list.html'
+    
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'blog/detail.html'
+    
+class PostCreateView(LoginRequiredMixin, UserPassesTestMixin,CreateView):
+    model = Post
+    template_name = 'blog/form.html'
+    
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
+    model = Post
+    template_name = 'blog/form.html'
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+    
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
+    model = Post
+    template_name = 'blog/form.html'
+    
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author

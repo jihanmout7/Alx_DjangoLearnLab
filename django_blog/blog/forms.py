@@ -14,3 +14,13 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email']
+        
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+        
+    def validate(self, data):
+        if len(data['title']) < 5:
+            raise forms.ValidationError("Title must be at least 5 characters long.")
+        return data    
