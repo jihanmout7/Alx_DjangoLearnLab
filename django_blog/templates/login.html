@@ -1,7 +1,6 @@
 {% load static %}  <!-- Load static files like CSS/JS -->
 
-{% block content %}  <!-- Define the content block that will be filled in this template -->
-
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,20 +13,15 @@
 </head>
 <body>
   <div class="container">
-    <h2>Login</h2>  <!-- Heading for the login page -->
+    <h2>Login</h2>  
     
     <!-- The login form -->
-    <form method="POST">  <!-- Use POST method to send the login data -->
-      {% csrf_token %}  <!-- CSRF token to protect against Cross-Site Request Forgery -->
-      
-      <!-- Render the form fields dynamically (as_p renders each field wrapped in <p> tags) -->
-      {{ form.as_p }}  
-      
-      <!-- Submit button for the login form -->
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
       <button type="submit">Login</button>
     </form>
 
-    <!-- Link to the registration page for users who don't have an account -->
     <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
   </div>
 
@@ -35,5 +29,4 @@
   <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>
-
 {% endblock %}
