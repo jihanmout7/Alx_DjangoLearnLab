@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load static %}  <!-- Add this line to load the static files tag -->
+
+{% block content %}
+  <h2>Login</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+  <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+
+  <!-- Example of using static files for CSS/JS -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% endblock %}
