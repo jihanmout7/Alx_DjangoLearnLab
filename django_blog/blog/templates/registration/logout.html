@@ -1,6 +1,14 @@
-<!-- registration/logout_confirm.html -->
-<p>Are you sure you want to log out?</p>
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit">Yes, log me out</button>
-</form>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="form-title">Logout Confirmation</h2>
+    <p>Are you sure you want to log out?</p>
+    <form method="POST">
+      {% csrf_token %}
+      <button type="submit" class="submit-btn">Yes, log me out</button>
+    </form>
+    <p><a href="{% url 'home' %}">Cancel</a></p>
+  </div>
+{% endblock %}
