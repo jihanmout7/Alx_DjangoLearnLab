@@ -13,8 +13,8 @@ urlpatterns = [
 
 urlpatterns = [
     path('', PostListView.as_view(), name='blog_post_list'),
-    path('new/', PostCreateView.as_view(), name='blog_post_create'),
+    path("post/new/", PostCreateView.as_view(), name='blog_post_create'),
     path('<int:pk>/', PostDetailView.as_view(), name='blog_post_detail'),
-    path('<int:pk>/edit/', PostUpdateView.as_view(), name='blog_post_edit'),
-    path('<int:pk>/delete/', PostDeleteView.as_view(), name='blog_post_delete'),
+    path("post/<int:pk>/update/", PostUpdateView.as_view(), name='blog_post_edit'),
+    path("post/<int:pk>/delete/", PostDeleteView.as_view(), name='blog_post_delete'),
 ]
