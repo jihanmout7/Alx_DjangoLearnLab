@@ -1,13 +1,24 @@
 <!-- templates/blog/register.html -->
-{% extends "base.html" %}
-{% load static %} 
 
-{% block content %}
-  <h2>Register</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+
+{% load static %}  <!-- Load static files (for CSS/JS/etc.) -->
+
+{% block content %}  <!-- Define the content block that will be filled in this template -->
+
+  <h2>Register</h2>  <!-- Heading for the registration page -->
+  
+  <!-- The form to register -->
+  <form method="POST">  <!-- Use POST method to send data -->
+    {% csrf_token %}  <!-- CSRF token to protect against cross-site request forgery -->
+    
+    <!-- Render the form fields dynamically (using as_p will wrap them in <p> tags) -->
+    {{ form.as_p }}  
+    
+    <!-- Submit button to register -->
     <button type="submit">Register</button>
   </form>
+
+  <!-- Link to login page in case the user already has an account -->
   <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+
 {% endblock %}

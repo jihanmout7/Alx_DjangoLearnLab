@@ -1,16 +1,25 @@
-{% extends "base.html" %}
 
-{% load static %}  <!-- Add this line to load the static files tag -->
+{% load static %}  <!-- Load static files like CSS/JS -->
 
-{% block content %}
-  <h2>Login</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+{% block content %}  <!-- Define the content block that will be filled in this template -->
+
+  <h2>Login</h2>  <!-- Heading for the login page -->
+  
+  <!-- The login form -->
+  <form method="POST">  <!-- Use POST method to send the login data -->
+    {% csrf_token %}  <!-- CSRF token to protect against Cross-Site Request Forgery -->
+    
+    <!-- Render the form fields dynamically (as_p renders each field wrapped in <p> tags) -->
+    {{ form.as_p }}  
+    
+    <!-- Submit button for the login form -->
     <button type="submit">Login</button>
   </form>
+
+  <!-- Link to the registration page for users who don't have an account -->
   <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
 
-  <!-- Example of using static files for CSS/JS -->
+  <!-- Example of using static files for custom CSS -->
   <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
 {% endblock %}
