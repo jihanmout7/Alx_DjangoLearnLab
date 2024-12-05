@@ -27,5 +27,5 @@ class PostForm(forms.ModelForm):
     
 class CommentForm(forms.ModelForm):
     class Meta:
-        model = "Comment", "content"
+        model = "Comment"
         fields = '__all__'
