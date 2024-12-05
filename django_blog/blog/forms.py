@@ -24,3 +24,8 @@ class PostForm(forms.ModelForm):
         if len(data['title']) < 5:
             raise forms.ValidationError("Title must be at least 5 characters long.")
         return data    
+    
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'

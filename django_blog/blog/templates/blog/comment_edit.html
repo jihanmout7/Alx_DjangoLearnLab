@@ -1,0 +1,9 @@
+<section class="edit-comment">
+    <h3>Edit Your Comment</h3>
+    
+    <form method="POST" action="{% url 'update_comment' comment.id %}">
+        {% csrf_token %}
+        <textarea name="content" required>{{ comment.content }}</textarea>
+        <button type="submit">Update Comment</button>
+    </form>
+</section>

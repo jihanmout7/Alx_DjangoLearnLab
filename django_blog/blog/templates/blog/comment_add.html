@@ -1,0 +1,9 @@
+<section class="add-comment">
+    <h3>Leave a Comment</h3>
+    
+    <form method="POST" action="{% url 'add_comment' post.id %}">
+        {% csrf_token %}
+        <textarea name="content" placeholder="Write your comment..." required></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
+</section>

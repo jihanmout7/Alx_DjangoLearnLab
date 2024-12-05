@@ -1,0 +1,19 @@
+<section class="comments-section">
+    <h2>Comments</h2>
+
+    <!-- Loop through comments -->
+    {% for comment in post.comments.all %}
+        <div class="comment">
+            <p><strong>{{ comment.user.username }}</strong> - <small>{{ comment.created_at|date:"F j, Y, g:i a" }}</small></p>
+            <p>{{ comment.content }}</p>
+            
+            <!-- Edit and Delete options for logged-in user who made the comment -->
+            {% if user == comment.user or user.is_admin %}
+                <a href="{% url 'edit_comment' comment.id %}">Edit</a> | 
+                <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+    {% endfor %}
+</section>

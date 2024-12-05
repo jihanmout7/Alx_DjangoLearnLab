@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm  # For profile management
 from django.contrib import messages
 from django.views.generic import ListView , DetailView , CreateView ,UpdateView ,DeleteView
-from .models import Post
+from .models import Post ,Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Registration View
 def register(request):
@@ -69,3 +69,23 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+    
+class CommentDeleteView(DeleteView):
+    model = Comment
+    template_name = 'blog/form.html'
+    
+class CommentUpdateView(UpdateView):
+    model = Comment
+    template_name = 'blog/form.html'
+    
+class CommentListView(ListView):
+    model = Comment
+    template_name = 'blog/form.html'
+    
+class CommentCreateView(CreateView):
+    model = Comment
+    template_name = 'blog/form.html'
+    
+class CommentDetailView(DetailView):
+    model = Comment
+    template_name = 'blog/form.html'
