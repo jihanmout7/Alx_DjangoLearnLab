@@ -95,6 +95,7 @@ class CommentDetailView(DetailView):
 def search_posts(request):
     query = request.GET.get('q', '')  # Get the search query from the GET parameters
     posts = Post.objects.all()
+    posts = Post.objects.filter
 
     if query:
         # Use Q objects to filter posts by title, content, or tags
