@@ -6,6 +6,7 @@ from .forms import ProfileForm  # For profile management
 from django.contrib import messages
 from django.views.generic import ListView , DetailView , CreateView ,UpdateView ,DeleteView
 from .models import Post ,Comment
+from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Registration View
 def register(request):
@@ -89,3 +90,18 @@ class CommentCreateView(CreateView):
 class CommentDetailView(DetailView):
     model = Comment
     template_name = 'blog/form.html'
+    
+
+def search_posts(request):
+    query = request.GET.get('q', '')  # Get the search query from the GET parameters
+    posts = Post.objects.all()
+
+    if query:
+        # Use Q objects to filter posts by title, content, or tags
+        posts = posts.filter(
+            Q(title__icontains=query) | 
+            Q(content__icontains=query) | 
+            Q(tags__name__icontains=query)  # Filter by tags (tags are linked via many-to-many relationship)
+        ).distinct()  # Use distinct to avoid duplicate posts if they're tagged with the same keyword
+
+    return render(request, 'search_results.html', {'posts': posts, 'query': query})

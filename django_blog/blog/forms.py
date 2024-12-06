@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Comment
-
+from taggit.forms import TagField  # Import the TagField from django-taggit
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -18,6 +18,7 @@ class ProfileForm(forms.ModelForm):
         fields = ['username', 'email']
         
 class PostForm(forms.ModelForm):
+    tags = TagField(required=False)  # Use TagField to handle the tags input
     class Meta:
         model = User
         fields = '__all__'

@@ -29,3 +29,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.author} on {self.post.title}"
+    
+    
+class Tag (models.Model):
+    name = models.CharField(max_length=100)
+    tags = models.ManyToManyField(Post)
+    
+    
+    
+    
