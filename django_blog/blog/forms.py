@@ -21,7 +21,7 @@ class PostForm(forms.ModelForm):
     tags = TagField(required=False)  # Use TagField to handle the tags input
     class Meta:
         model = User
-        fields = '__all__'
+        fields = '__all__' ,["TagWidget()", "widgets"] 
         
     def validate(self, data):
         if len(data['title']) < 5:
