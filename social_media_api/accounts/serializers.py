@@ -37,7 +37,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         
         
          # Create a token for the user after they are successfully created
-        token = Token.objects.create(user=user)
+        token = serializers.CharField(Token.objects.create(user=user))
 
         return {
             'user': user,
