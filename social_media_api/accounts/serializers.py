@@ -1,32 +1,36 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
-from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from rest_framework.validators import UniqueValidator
+from django.contrib.auth.password_validation import validate_password
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
-
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+    
     class Meta:
-        model = User
+        model = get_user_model()  # This ensures the use of the custom user model
         fields = '__all__'
         extra_kwargs = {
-            'password': {'write_only': True}
+            'email': {'required': True, 'validators': [UniqueValidator(queryset=get_user_model().objects.all())]},
         }
 
-    def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        return user
-    
-    
-class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=100)
-    password = serializers.CharField(max_length=100, write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
-
     def validate(self, data):
-        user = authenticate(**data)
-        if user and user.is_active:
-            return {
-                'token': user.auth_token.key
-            }
-        raise serializers.ValidationError("Incorrect Credentials")
+        # Check if the passwords match
+        if data['password'] != data['password2']:
+            raise ValidationError({"password2": "The two password fields didn't match."})
+        return data
+    
+    def create(self, validated_data):
+        # Remove password2 as it's not required during user creation
+        validated_data.pop('password2')
+
+      # Create the user
+        user = get_user_model().objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+            phone_number=validated_data['phone_number'],
+            bio=validated_data.get('bio', '')
+        )
+        return user
