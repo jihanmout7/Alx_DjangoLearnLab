@@ -36,3 +36,4 @@ class TokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Token
         fields = ['key']
+        token = Token.objects.create()
