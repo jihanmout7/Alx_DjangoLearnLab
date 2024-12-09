@@ -4,11 +4,14 @@ from django.core.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     # Define password as a write-only field
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    token =serializers.CharField(Token.objects.create(user=User)) 
 
     class Meta:
         model = get_user_model()
@@ -37,9 +40,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         )
 
         # Create token after user creation
-        token = Token.objects.create(user=user)
+        
 
         return {
             'user': user,
-            'token': token.key  # Return token key to the user
         }
