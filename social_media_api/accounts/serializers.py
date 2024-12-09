@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+from rest_framework.authtoken.models import Token
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -33,4 +34,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             phone_number=validated_data['phone_number'],
             bio=validated_data.get('bio', '')
         )
-        return user
+        
+        
+         # Create a token for the user after they are successfully created
+        token = Token.objects.create(user=user)
+
+        return {
+            'user': user,
+            'token': token.key  # Return the token key (JWT or Auth token)
+        }
