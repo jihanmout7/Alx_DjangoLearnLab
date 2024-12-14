@@ -11,7 +11,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Automatically set when the post is created
     updated_at = models.DateTimeField(auto_now=True)  # Automatically updated when the post is modified
     
-        class Meta:
+    class Meta:
         ordering = ['-created_at']
         
         def __str__(self):
@@ -35,5 +35,19 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.post.title}"
+    
+    
+
+class Like(models.Model):
+    post = models.ForeignKey("Post", verbose_name="Liked Post", on_delete=models.CASCADE)
+    user = models.ForeignKey("User", verbose_name="User Who Liked", on_delete=models.CASCADE)
+    class Meta:
+        unique_together = ['post', 'user']  # This ensures a user can like a post only once
+
+    def __str__(self):
+        return f"{self.user} liked {self.post}"
+    
+    
+
 
 
