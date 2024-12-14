@@ -8,8 +8,8 @@ class Post(models.Model):
     author = models.ForeignKey(User, verbose_name="Author", on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     content = models.TextField()
-    created_at = models.DateField(auto_now_add=True)  # Automatically set when the post is created
-    updated_at = models.DateField(auto_now=True)  # Automatically updated when the post is modified
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically set when the post is created
+    updated_at = models.DateTimeField(auto_now=True)  # Automatically updated when the post is modified
 
     def __str__(self):
         return self.title
