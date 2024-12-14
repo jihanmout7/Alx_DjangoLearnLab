@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Comment
+from .models import Post, Comment, Feed
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,3 +26,4 @@ class CommentSerializer(serializers.ModelSerializer):
         if 'text' in data and not data['text']:
             raise serializers.ValidationError("Comment text cannot be empty.")
         return data
+

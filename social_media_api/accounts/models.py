@@ -7,7 +7,13 @@ class CustomUser(AbstractUser):
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     followers = models.ManyToManyField('self', symmetrical=False, related_name='following', blank=True)
-
+    following = models.ManyToManyField(
+        'self', 
+        symmetrical=False,  # A user following another does not mean they are being followed back automatically.
+        related_name='followers', 
+        blank=True,
+        verbose_name='Following'
+    )
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='customuser_set',  # Customize the reverse relationship

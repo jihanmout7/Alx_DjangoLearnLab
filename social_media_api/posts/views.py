@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .models import Post, Comment
+from .models import Post, Comment 
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly  # Import the custom permission
 
@@ -26,7 +26,19 @@ class PostViewSet(viewsets.ModelViewSet):
         # Associate the created post with the current user
         serializer.save(user=self.request.user)
         
-   
+@login_required
+def feed(request):
+    # Get the current user
+    user = request.user
+    
+    # Get the list of users the current user is following
+    following_users = user.following.all()  # All users the current user follows
+    
+    # Get the posts from the followed users, ordered by creation date
+    posts = Post.objects.filter(user__in=following_users).order_by('-created_at')
+    
+    # Render the feed template with the posts
+    return render(request, 'posts/feed.html', {'posts': posts})
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
@@ -37,3 +49,8 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Associate the created comment with the current user
         serializer.save(user=self.request.user)
+
+
+
+ 
+        

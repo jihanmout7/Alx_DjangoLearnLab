@@ -10,9 +10,21 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)  # Automatically set when the post is created
     updated_at = models.DateTimeField(auto_now=True)  # Automatically updated when the post is modified
+    
+        class Meta:
+        ordering = ['-created_at']
+        
+        def __str__(self):
+            return f"Post by {self.user.username} at {self.created_at}"
+class Follow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
+    followed_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+
+    class Meta:
+        unique_together = ('user', 'followed_user')
 
     def __str__(self):
-        return self.title
+        return f"{self.user.username} follows {self.followed_user.username}"
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, verbose_name="Post", on_delete=models.CASCADE)
@@ -23,3 +35,5 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.post.title}"
+
+
