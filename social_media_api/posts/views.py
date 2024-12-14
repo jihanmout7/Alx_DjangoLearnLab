@@ -9,6 +9,7 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     queryset = Post.objects.filter(author__in=following_users)
+    queryset = Post.objects.filter(author__in=following_users).order_by
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]  # Apply the custom permission
     filter_backends = [SearchFilter]  # Specify the filtering backend
