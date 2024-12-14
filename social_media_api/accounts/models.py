@@ -8,5 +8,15 @@ class CustomUser(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     followers = models.ManyToManyField('self', symmetrical=False, related_name='following', blank=True)
 
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',  # Customize the reverse relationship
+        blank=True,
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_set',  # Customize the reverse relationship
+        blank=True,
+    )  
     def __str__(self):
         return self.username
