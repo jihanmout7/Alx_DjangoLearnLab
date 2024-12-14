@@ -107,7 +107,8 @@ def unlike(request, post_id):
 @login_required
 def notification(request, post_id):
     user = request.user
-    post = get_object_or_404(Post, id=post_id)
+    post = generics.get_object_or_404(Post, pk=pk)
+    like = Like.objects.get_or_create(user=request.user, post=post)
 
     # Initialize a response variable to store notification type
     response = {}
