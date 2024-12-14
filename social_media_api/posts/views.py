@@ -8,10 +8,12 @@ from .permissions import IsOwnerOrReadOnly  # Import the custom permission
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    queryset = Post.objects.filter(author__in=following_users)
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]  # Apply the custom permission
     filter_backends = [SearchFilter]  # Specify the filtering backend
     search_fields = ['title', 'content']  # Specify the fields to search
+    permission_classes = permissions.IsAuthenticated
 
     # Optional: If you want to filter based on other parameters like 'username', you can modify get_queryset.
     def get_queryset(self):
