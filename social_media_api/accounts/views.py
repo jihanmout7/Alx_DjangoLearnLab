@@ -7,7 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile , CustomUser
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -77,3 +78,8 @@ def unfollow_user(request, user_id):
 
     except User.DoesNotExist:
         return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+class Meta :
+    model = CustomUser
+    queryset = CustomUser.objects.all()
+    permission_classes = [IsAuthenticated]
