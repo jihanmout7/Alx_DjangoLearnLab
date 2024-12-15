@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ghs^%t_w+z8sheprlkxduos8)1!ugr_)$*c*7nyaq(zmgqxh1@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [authiticated]
 
 
 # Application definition
@@ -81,10 +81,18 @@ WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # Use MySQL database backend
+        'NAME': 'your_production_db_name',  # The name of your database
+        'USER': 'root',  # The username to access your database
+        'PASSWORD': 'Jihan@2029@2029',  # The password for the database user
+        'HOST': '127.0.0.1',  # The host where the MySQL database is located (e.g., 'localhost' or IP address)
+        'PORT': '3306',  # Default MySQL port (use it unless you're using a custom port)
+        'OPTIONS': {
+            'charset': 'utf8mb4',  # Ensure proper encoding for modern apps (supports full Unicode)
+        },
     }
 }
+
 
 
 # Password validation
@@ -122,8 +130,30 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+SECURE_BROWSER_XSS_FILTER = True
+
+X_FRAME_OPTIONS = 'DENY'
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SECURE_SSL_REDIRECT = True
+
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply to subdomains
+SECURE_HSTS_PRELOAD = True  # Allow preloading in browser lists
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+CSRF_COOKIE_HTTPONLY = True
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
